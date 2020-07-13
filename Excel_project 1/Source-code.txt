@@ -1,0 +1,34 @@
+1	Excel: Open Spreadsheet "C:\Users\user_2\Documents\Automation Anywhere Files\Data.xlsx". ActiveSheet: "Default". Contains Header. Session: S1
+2	Excel: Get All Cells Session: S1
+3	Comment: *******Loop command for Getting data from Excel sheet********
+4	Start Loop "Each row in an Excel dataset of Session: S1"
+5	     Variable Operation: $Excel Column(2)$ To $mode$
+6	     Variable Operation: $Excel Column(3)$ To $bank$
+7	     Variable Operation: $Excel Column(4)$ To $RRN$
+8	     Comment: *********Check whether the bank name equal to SBI,HDFC,Corporation Bank or ICICI*********
+9	     If $bank$ Equal To (=) "SBI" OR $bank$ Equal To (=) "Corporation Bank" OR $bank$ Equal To (=) "HDFC" OR $bank$ Equal To (=) "ICICI" Then
+10	          Variable Operation: - To $bank$
+11	     End If
+12	     Excel: Open Spreadsheet "C:\Users\user_2\Documents\Automation Anywhere Files\MacroSheet.xlsx". ActiveSheet: "Default". Contains Header. Session: S2
+13	     Excel: Get All Cells Session: S2
+14	     Comment: *********Loop command for getting data************
+15	     Start Loop "Each row in an Excel dataset of Session: S2"
+16	          If $Excel Column(2)$ Equal To (=) $mode$ AND $Excel Column(3)$ Equal To (=) $bank$ AND $Excel Column(5)$ Equal To (=) $RRN$ Then
+17	               Variable Operation: $Excel Column(6)$ To $macro$
+18	               Variable Operation: $count$+1 To $count$
+19	               Exit Loop
+20	          End If
+21	     End Loop
+22	     Excel: Open Spreadsheet "C:\Users\user_2\Documents\Automation Anywhere Files\Data.xlsx". ActiveSheet: "Default". Contains Header. Session: S1
+23	     Excel: Go to cell "E$count$". Session: S1
+24	     Comment: *********Check the condition for Required bank name***********
+25	     If $bank$ Equal To (=) "-" Then
+26	          Excel: Set value of Active Cell with "$bank$". Session: S1
+27	     Else
+28	          Excel: Set value of Active Cell with "$macro$". Session: S1
+29	     End If
+30	     Variable Operation:  To $macro$
+31	End Loop
+32	Excel: Close Spreadsheet. Session: S1
+33	Comment: *********Rename File***********
+34	Rename Files "C:\Users\user_2\Documents\Automation Anywhere Files\Data.xlsx" to "shafnapm99@gmail.com_Bot_2_Output.xlsx"  
